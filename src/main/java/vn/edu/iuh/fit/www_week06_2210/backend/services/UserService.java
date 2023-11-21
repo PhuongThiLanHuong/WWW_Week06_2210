@@ -19,4 +19,7 @@ public class UserService {
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         return userRepository.findAll(pageable);
     }
+    public User login(String email, String password) {
+        return userRepository.findByEmailAndPasswordHash(email, password).orElse(null);
+    }
 }
