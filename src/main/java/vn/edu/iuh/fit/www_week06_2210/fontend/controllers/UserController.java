@@ -1,43 +1,43 @@
 package vn.edu.iuh.fit.www_week06_2210.fontend.controllers;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.www_week06_2210.backend.models.User;
 import vn.edu.iuh.fit.www_week06_2210.backend.repositories.UserRepository;
-import vn.edu.iuh.fit.www_week06_2210.backend.services.UserService;
+
+import java.util.Optional;
 
 
 @Controller
-@RequestMapping("/users")
 public class UserController {
+    @Autowired
     private UserRepository userRepository;
-    private UserService userService;
-    @GetMapping("/{id}")
-    private String getUser(@PathVariable("id") String id)
-    {
-        return "";
-    }
+    @GetMapping(value = {"/login"})
+    public String login(Model model, HttpSession session) {
+        User user = new User();
 
-    @GetMapping("/show-add-form")
-    public String  showAddForm(@ModelAttribute User user, Model model)
-    {
-        user = new User();
+        if (session.getAttribute("user") != null)
+            return "redirect:/index";
+
         model.addAttribute("user", user);
-        return "user/add-form";
-    }
-    @GetMapping("/show-login")
-    public String showLogin(@ModelAttribute User user,Model model)
-    {
-        model.addAttribute("user",new User());
-        return "user/login";
+
+        return "login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User user,Model model)
-    {
-        User user1=userService.login(user.getEmail(),user.getPasswordHash());
-        model.addAttribute("userLogin",user1);
-        return "index";
+    public String handleLogin(@ModelAttribute("user") User user, Model model, HttpSession httpSession) {
+        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
+
+        if(userOptional != null){
+            httpSession.setAttribute("user", user);
+            return "redirect:/";
+        }
+
+        return "/login";
     }
+
 }

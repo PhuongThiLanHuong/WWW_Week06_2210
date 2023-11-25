@@ -43,4 +43,19 @@ public class User {
     private Set<Post> posts=new LinkedHashSet<>();
     @OneToMany(mappedBy = "user")
     private Set<PostComment> postComments=new LinkedHashSet<>();
+    public User(Long id) {
+        this.id = id;
+    }
+    public User(String firstName, String middleName, String lastName, String mobile, String email, String passwordHash, Instant registeredAt, Instant lastLogin, String intro, String text) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.mobile = mobile;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.registeredAt = registeredAt;
+        this.lastLogin = lastLogin;
+        this.intro = intro;
+        this.text = text;
+    }
 }
