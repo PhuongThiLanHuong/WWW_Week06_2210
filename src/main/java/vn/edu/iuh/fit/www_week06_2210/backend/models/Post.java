@@ -47,4 +47,17 @@ public class Post {
     private Set<Post> posts=new LinkedHashSet<>();
     @OneToMany(mappedBy = "post")
     private Set<PostComment> postComments=new LinkedHashSet<>();
+
+    public Post(User author, Post parent, String title, String metaTitle, String summary, boolean published, Instant createdAt, Instant updateAt, Instant publishedAt, String content) {
+        this.author = author;
+        this.parent = parent;
+        this.title = title;
+        this.metaTitle = metaTitle;
+        this.summary = summary;
+        this.published = published;
+        this.createdAt = createdAt;
+        this.updateAt = updateAt;
+        this.publishedAt = publishedAt;
+        this.content = content;
+    }
 }
