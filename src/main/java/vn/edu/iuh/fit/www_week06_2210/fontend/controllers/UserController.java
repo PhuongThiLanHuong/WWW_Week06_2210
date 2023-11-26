@@ -34,7 +34,7 @@ public class UserController {
 
         if(userOptional != null){
             httpSession.setAttribute("user", user);
-            return "redirect:/";
+            return "redirect:/index";
         }
 
         return "/login";
