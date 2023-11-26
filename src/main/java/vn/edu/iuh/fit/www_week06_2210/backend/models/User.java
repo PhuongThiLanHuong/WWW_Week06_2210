@@ -1,15 +1,14 @@
 package vn.edu.iuh.fit.www_week06_2210.backend.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+
 @Table(name="user")
 @Getter
 @Setter
