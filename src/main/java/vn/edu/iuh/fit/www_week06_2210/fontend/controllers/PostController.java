@@ -6,12 +6,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.www_week06_2210.backend.models.Post;
+import vn.edu.iuh.fit.www_week06_2210.backend.models.PostComment;
+import vn.edu.iuh.fit.www_week06_2210.backend.models.User;
+import vn.edu.iuh.fit.www_week06_2210.backend.repositories.PostCommentRepository;
 import vn.edu.iuh.fit.www_week06_2210.backend.repositories.PostRepository;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,6 +26,8 @@ import java.util.stream.IntStream;
 public class PostController {
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private PostCommentRepository postCommentRepository;
 
     @GetMapping(value = {"/", "/index", "/posts"})
     public ModelAndView index(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, HttpSession session) {
@@ -40,5 +48,22 @@ public class PostController {
         modelAndView.setViewName("index");
 
         return modelAndView;
+    }
+    @GetMapping("/show-add-form")
+    public ModelAndView add(Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+        Post post = new Post();
+        post.setAuthor(new User(1l));
+        modelAndView.addObject("post", post);
+        modelAndView.addObject("user", post.getAuthor());
+        modelAndView.setViewName("post/addPost");
+        return modelAndView;
+    }
+    @PostMapping("/post/add")
+    public String addPOst(
+            @ModelAttribute("post") Post post,
+            BindingResult result, Model model) {
+        postRepository.save(post);
+        return "redirect:/index";
     }
 }

@@ -60,4 +60,9 @@ public class Post {
         this.publishedAt = publishedAt;
         this.content = content;
     }
+
+    public Post(Long id) {
+        this.id = id;
+    }
+
 }
