@@ -64,6 +64,39 @@ public class PostController {
             @ModelAttribute("post") Post post,
             BindingResult result, Model model) {
         postRepository.save(post);
-        return "redirect:/index";
+        return "index";
+    }
+    @GetMapping(value = {"/post/{id}"})
+    public ModelAndView postDetail(@PathVariable("id") String id, @RequestParam("page") Optional<Integer> page, HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Integer pageNum = page.orElse(1);
+
+        try {
+            Long idLong = Long.parseLong(id);
+            Optional<Post> post = postRepository.findPostById(idLong);
+
+
+            if (post.isPresent()) {
+                PageRequest pageRequest = PageRequest.of(0, 5 * pageNum, Sort.by("createdAt").descending());
+
+                Page<PostComment> comments = postCommentRepository.findAllByPostId(idLong, pageRequest);
+                PostComment postComment = new PostComment();
+                PostComment parenPostComment = new PostComment();
+
+                modelAndView.addObject("post", post.get());
+                modelAndView.addObject("comments", comments);
+                modelAndView.addObject("postComment", postComment);
+                modelAndView.addObject("parenPostComment", parenPostComment);
+                modelAndView.addObject("user", session.getAttribute("user"));
+                modelAndView.addObject("pageNext", comments.getSize() / 5 + 1);
+
+                modelAndView.setViewName("post/detail");
+            }
+        } catch (Exception e) {
+            modelAndView.setViewName("notFound");
+        }
+
+        return modelAndView;
     }
 }

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
@@ -24,7 +23,7 @@
 <body>
 <h1 th:align="center">ADD NEW POST</h1>
 <div class="x">
-  <form action="#" th:action="@{/post/addPost}" th:object="${post}" method="post">
+  <form action="#" th:action="@{/post/add}" th:object="${post}" method="post">
     <div class="d-grid gap-1 col-3 mx-auto">
       <input class="btn btn-danger" type="submit" value="Add Post">
     </div>
@@ -76,16 +75,13 @@
         <input type="text" class="form-control" id="content" th:field="*{content}">
       </div>
     </div>
+    <div class="row mb-3">
+      <label for="author" class="col-sm-6 ">Author id</label>
+      <div class="col-12">
+        <input type="text" class="form-control" id="author" th:field="*{author}">
+      </div>
+    </div>
     <br/>
 
   </form>
 </div>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
